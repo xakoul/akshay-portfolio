@@ -6,6 +6,7 @@ export interface ResumeData {
     email: string;
     linkedin: string;
     github?: string;
+    instagram?: string;
     location: string;
   };
   skills: {
@@ -35,6 +36,7 @@ export interface ResumeData {
   contact: {
     email: string;
     linkedin: string;
+    github: string;
     preferredMethod: string;
     availability: string;
   };
@@ -48,6 +50,8 @@ export const resumeData: ResumeData = {
     bio: "Passionate software engineer with expertise in full-stack development, cloud technologies, and building scalable applications. I love solving complex problems and creating innovative solutions.",
     email: "koul.akshay17@gmail.com",
     linkedin: "https://www.linkedin.com/in/koulakshay/",
+    github: "https://github.com/xakoul",
+    instagram: "https://www.instagram.com/xa_koul/",
     location: "United States"
   },
   skills: {
@@ -162,6 +166,7 @@ export const resumeData: ResumeData = {
   contact: {
     email: "koul.akshay17@gmail.com",
     linkedin: "https://www.linkedin.com/in/koulakshay/",
+    github: "https://github.com/xakoul",
     preferredMethod: "Email or LinkedIn",
     availability: "Open to new opportunities and collaborations"
   }

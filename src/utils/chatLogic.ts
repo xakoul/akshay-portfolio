@@ -11,6 +11,8 @@ ${resumeData.personal.bio}
 
 I have experience working with companies like ${resumeData.experience.map(exp => exp.company).join(', ')}, and I'm passionate about building innovative software solutions that make a real impact.
 
+You can find my work on [GitHub](${resumeData.personal.github}) and connect with me on [LinkedIn](${resumeData.personal.linkedin}).
+
 Feel free to ask me about my skills, projects, or anything else you'd like to know!`;
   }
 
@@ -84,8 +86,9 @@ What hobbies do you enjoy?`;
   if (lowerQuestion.includes('contact') || lowerQuestion.includes('reach') || lowerQuestion.includes('touch') || lowerQuestion.includes('email') || lowerQuestion.includes('connect')) {
     return `I'd love to connect with you! Here are the best ways to reach me:
 
-📧 **Email:** ${resumeData.contact.email}
-💼 **LinkedIn:** ${resumeData.contact.linkedin}
+📧 **Email:** [${resumeData.contact.email}](mailto:${resumeData.contact.email})
+💼 **LinkedIn:** [${resumeData.contact.linkedin}](${resumeData.contact.linkedin})
+🐙 **GitHub:** [${resumeData.contact.github}](${resumeData.contact.github})
 
 **Preferred Method:** ${resumeData.contact.preferredMethod}
 
