@@ -28,7 +28,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
   return (
     <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-        <div className="flex items-end space-x-3">
+        <div className="flex items-center space-x-3">
           <div className="flex-1 relative">
             <textarea
               value={input}
@@ -60,7 +60,8 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
                      transition-colors duration-200
                      disabled:cursor-not-allowed
                      flex items-center justify-center
-                     min-w-[48px]"
+                     min-w-[48px] h-[48px]
+                     shrink-0"
           >
             {isLoading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -70,13 +71,12 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
+                <path d="M22 2L11 13" />
+                <path d="M22 2l-7 20-4-9-9-4 20-7z" />
               </svg>
             )}
           </button>
