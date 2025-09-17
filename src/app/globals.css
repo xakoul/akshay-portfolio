@@ -79,6 +79,17 @@ html {
   color: white;
 }
 
+/* Hide scrollbars for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  scroll-behavior: smooth;  /* Smooth scrolling */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
 /* Animation for message bubbles */
 @keyframes fadeInUp {
   from {

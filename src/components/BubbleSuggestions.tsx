@@ -43,7 +43,8 @@ export default function BubbleSuggestions({ onSuggestionClick, askedQuestions, i
   return (
     <div className="px-4 pb-2 animate-fadeIn">
       <div className="max-w-4xl mx-auto">
-        <div className="flex flex-wrap gap-2 justify-center">
+        {/* Desktop: Flex wrap layout */}
+        <div className="hidden sm:flex sm:flex-wrap gap-2 justify-center">
           {availableQuestions.map((question, index) => (
             <button
               key={index}
@@ -68,6 +69,36 @@ export default function BubbleSuggestions({ onSuggestionClick, askedQuestions, i
               <span className="truncate">{question}</span>
             </button>
           ))}
+        </div>
+
+        {/* Mobile: Horizontal scrollable */}
+        <div className="sm:hidden">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+            {availableQuestions.map((question, index) => (
+              <button
+                key={index}
+                onClick={() => onSuggestionClick(question)}
+                className="bg-white dark:bg-gray-800 
+                         border border-gray-200 dark:border-gray-600
+                         hover:border-blue-300 dark:hover:border-blue-500
+                         hover:bg-blue-50 dark:hover:bg-blue-900/20
+                         text-gray-700 dark:text-gray-300
+                         hover:text-blue-700 dark:hover:text-blue-300
+                         px-3 py-2 rounded-full text-sm
+                         transition-all duration-200
+                         shadow-sm hover:shadow-md
+                         flex items-center space-x-1
+                         whitespace-nowrap
+                         flex-shrink-0
+                         animate-slideUp"
+                style={{ animationDelay: `${index * 100}ms` }}
+                title={question}
+              >
+                <span className="text-blue-500 text-xs">💭</span>
+                <span>{question}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
