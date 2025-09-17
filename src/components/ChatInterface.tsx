@@ -6,10 +6,12 @@ import { generateResponse } from '@/utils/chatLogic';
 import MessageBubble from './MessageBubble';
 import ChatInput from './ChatInput';
 import SuggestedPrompts from './SuggestedPrompts';
+import BubbleSuggestions from './BubbleSuggestions';
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [askedQuestions, setAskedQuestions] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initial welcome message
@@ -31,6 +33,9 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
   }, [messages]);
 
   const handleSendMessage = async (content: string) => {
+    // Add to asked questions set
+    setAskedQuestions(prev => new Set([...prev, content]));
+
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -62,7 +67,12 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
     handleSendMessage(prompt);
   };
 
+  const handleBubbleSuggestionClick = (suggestion: string) => {
+    handleSendMessage(suggestion);
+  };
+
   const showSuggestions = messages.length <= 1;
+  const showBubbleSuggestions = messages.length > 1 && !isLoading;
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
@@ -118,6 +128,13 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
           <div ref={messagesEndRef} />
         </div>
       </div>
+
+      {/* Bubble Suggestions above input */}
+      <BubbleSuggestions
+        onSuggestionClick={handleBubbleSuggestionClick}
+        askedQuestions={askedQuestions}
+        isVisible={showBubbleSuggestions}
+      />
 
       {/* Input */}
       <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
