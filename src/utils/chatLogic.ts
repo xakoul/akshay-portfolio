@@ -3,8 +3,15 @@ import { resumeData } from '@/data/resume';
 export function generateResponse(question: string): string {
   const lowerQuestion = question.toLowerCase();
 
-  // Who is Akshay Koul?
-  if (lowerQuestion.includes('who is akshay') || lowerQuestion.includes('about akshay') || lowerQuestion.includes('tell me about')) {
+  // Greeting - "hello"
+  if (lowerQuestion.trim() === 'hello' || lowerQuestion.trim() === 'hi' || lowerQuestion.trim() === 'hey') {
+    return `Hello! I'm Akshay Koul, and this is my interactive portfolio. I'm excited to chat with you about my background, experience, and projects.
+
+Feel free to ask me anything! You can use the suggested questions below or ask me something specific about my skills, projects, or experience.`;
+  }
+
+  // Who are you? - same response as "Who is Akshay Koul?"
+  if (lowerQuestion.includes('who are you') || lowerQuestion.includes('who is akshay') || lowerQuestion.includes('about akshay') || lowerQuestion.includes('tell me about')) {
     return `[icon:/avatar.jpg] **${resumeData.personal.name}**
 **${resumeData.personal.title}** - ${resumeData.personal.location}
 
@@ -120,7 +127,7 @@ Click on "Highlights" to learn more about the key contributions and technical de
   }
 
   // Hobbies
-  if (lowerQuestion.includes('hobby') || lowerQuestion.includes('hobbies') || lowerQuestion.includes('interests') || lowerQuestion.includes('fun') || lowerQuestion.includes('free time')) {
+  if (lowerQuestion.includes('hobby') || lowerQuestion.includes('hobbies') || lowerQuestion.includes('interests') || lowerQuestion.includes('fun') || lowerQuestion.includes('free time') || lowerQuestion.includes('what do i do') || lowerQuestion.includes('what do you do in your free time')) {
     return `When I'm not coding, I enjoy a variety of activities that keep me balanced and inspired:
 
 ${resumeData.hobbies.map(hobby => `• ${hobby}`).join('\n')}
