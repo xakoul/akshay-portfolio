@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Message } from '@/types/chat';
-import { generateResponse } from '@/utils/chatLogic';
+import { generateResponse, generateDadJokeResponse } from '@/utils/chatLogic';
 import { resumeData } from '@/data/resume';
 import MessageBubble from './MessageBubble';
 import ChatInput from './ChatInput';
@@ -88,9 +88,17 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
 
     // Generate AI response
     const responseContent = generateResponse(content);
+    
+    let finalResponseContent = responseContent;
+    
+    // Handle dad joke requests
+    if (responseContent === 'DAD_JOKE_REQUEST') {
+      finalResponseContent = await generateDadJokeResponse();
+    }
+    
     const aiMessage: Message = {
       id: (Date.now() + 1).toString(),
-      content: responseContent,
+      content: finalResponseContent,
       isUser: false,
       timestamp: new Date(),
     };
@@ -99,7 +107,7 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
     setIsLoading(false);
 
     // Check if this is a Harlem Shake trigger
-    if (responseContent.includes('[HARLEM_SHAKE_TRIGGER]')) {
+    if (finalResponseContent.includes('[HARLEM_SHAKE_TRIGGER]')) {
       // Trigger the shake effect after a short delay to let the message appear
       setTimeout(() => {
         triggerHarlemShake();

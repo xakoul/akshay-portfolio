@@ -287,5 +287,6 @@ export const suggestedQuestions = [
   "What projects have you worked on?",
   "What companies have you worked with?",
   "What are your hobbies?",
-  "How can I get in touch with you?"
+  "How can I get in touch with you?",
+  "Tell me a dad joke"
 ];

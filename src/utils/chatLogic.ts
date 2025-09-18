@@ -1,5 +1,32 @@
 import { resumeData } from '@/data/resume';
 
+// Fetch a dad joke from the API
+async function fetchDadJoke(): Promise<string> {
+  try {
+    const response = await fetch('https://icanhazdadjoke.com/', {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch joke');
+    }
+    
+    const data = await response.json();
+    return data.joke;
+  } catch (error) {
+    console.error('Error fetching dad joke:', error);
+    // Fallback jokes if API fails
+    const fallbackJokes = [
+      "Why don't scientists trust atoms? Because they make up everything!",
+      "Why did the developer go broke? Because he used up all his cache!",
+      "What do you call a fake noodle? An impasta!"
+    ];
+    return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+  }
+}
+
 export function generateResponse(question: string): string {
   const lowerQuestion = question.toLowerCase();
 
@@ -137,8 +164,10 @@ ${project.url ? `🌐 [Visit Website](${project.url})` : ''} [📋 Highlights](p
 Click on "Highlights" to learn more about the key contributions and technical details for each project!`;
   }
 
-  // What do you do? - Bio response
-  if (lowerQuestion.includes('what do you do') && !lowerQuestion.includes('free time') && !lowerQuestion.includes('in your free time')) {
+  // What do you do? - Bio response (more specific to avoid conflicts)
+  if ((lowerQuestion.includes('what do you do') && !lowerQuestion.includes('free time') && !lowerQuestion.includes('in your free time') && !lowerQuestion.includes('for fun')) || 
+      lowerQuestion.includes('what is your role') || 
+      lowerQuestion.includes('what is your job')) {
     return `[icon:/avatar.jpg] **${resumeData.personal.name}**
 **${resumeData.personal.title}** - ${resumeData.personal.location}
 
@@ -158,8 +187,21 @@ I'm passionate about using technology to solve real-world problems and creating 
 Want to know more about my specific skills, projects, or experience? Feel free to ask!`;
   }
 
-  // Hobbies
-  if (lowerQuestion.includes('hobby') || lowerQuestion.includes('hobbies') || lowerQuestion.includes('interests') || lowerQuestion.includes('fun') || lowerQuestion.includes('free time') || lowerQuestion.includes('what do you do in your free time')) {
+  // Dad joke generator - Check this early to avoid conflicts
+  if (lowerQuestion.includes('dad joke') || 
+      lowerQuestion === 'tell me a dad joke' || 
+      lowerQuestion === 'tell me a joke' || 
+      lowerQuestion === 'joke' ||
+      lowerQuestion.includes('funny joke') ||
+      lowerQuestion.includes('funny') ||
+      lowerQuestion.includes('can you tell me a joke')) {
+    
+    // Return a placeholder that will be replaced with the actual joke
+    return 'DAD_JOKE_REQUEST';
+  }
+
+  // Hobbies - More specific conditions to avoid conflicts
+  if (lowerQuestion.includes('hobby') || lowerQuestion.includes('hobbies') || lowerQuestion.includes('interests') || lowerQuestion.includes('fun time') || lowerQuestion.includes('free time') || lowerQuestion.includes('what do you do in your free time') || lowerQuestion.includes('for fun')) {
     return `When I'm not coding, I enjoy a variety of activities that keep me balanced and inspired:
 
 ${resumeData.hobbies.map(hobby => `• ${hobby}`).join('\n')}
@@ -195,6 +237,19 @@ Whether you're interested in collaboration, have questions about my work, or jus
 • **How can I get in touch with you?** - Connect with me
 
 Feel free to ask me anything else - I'm here to help!`;
+}
+
+// Generate a dad joke response with API integration
+export async function generateDadJokeResponse(): Promise<string> {
+  const joke = await fetchDadJoke();
+  
+  return `😄 **Dad Joke Time!** 🎭
+
+${joke}
+
+*Ba dum tss!* 🥁 
+
+Want another one? Just ask for another dad joke! 😂`;
 }
 
 export function getRandomSuggestion(): string {
