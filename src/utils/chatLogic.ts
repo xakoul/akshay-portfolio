@@ -5,7 +5,8 @@ export function generateResponse(question: string): string {
 
   // Who is Akshay Koul?
   if (lowerQuestion.includes('who is akshay') || lowerQuestion.includes('about akshay') || lowerQuestion.includes('tell me about')) {
-    return `Hi! I'm ${resumeData.personal.name}, a ${resumeData.personal.title} based in ${resumeData.personal.location}. 
+    return `[icon:/avatar.jpg] **${resumeData.personal.name}**
+**${resumeData.personal.title}** - ${resumeData.personal.location}
 
 ${resumeData.personal.bio}
 
@@ -35,17 +36,42 @@ ${resumeData.skills.tools.map(tool => `• ${tool}`).join('\n')}
 I'm always learning new technologies and staying up-to-date with industry trends. Is there a specific technology you'd like to know more about?`;
   }
 
-  // Handle "Tell me more about" requests for projects
+  // Handle "Tell me more about" requests for projects and companies
   if (lowerQuestion.includes('tell me more about')) {
-    const projectName = lowerQuestion.replace('tell me more about', '').trim();
-    const specificProject = resumeData.projects.find(project => 
-      project.name.toLowerCase().includes(projectName.toLowerCase())
-    );
+    let entityName = '';
+    
+    // Check if it's asking about work at a company
+    if (lowerQuestion.includes('your work at')) {
+      entityName = lowerQuestion.replace('tell me more about your work at', '').trim();
+      
+      const specificCompany = resumeData.experience.find(exp => 
+        exp.company.toLowerCase().includes(entityName.toLowerCase())
+      );
 
-    if (specificProject) {
-      return `[icon:${specificProject.icon || ''}] **${specificProject.name}**
+      if (specificCompany) {
+        return `[icon:${specificCompany.icon || ''}] **${specificCompany.company}**
+${specificCompany.position} (${specificCompany.duration})
 
-**Company:** ${specificProject.company || 'Independent Project'}
+${specificCompany.description}
+
+**Technologies Used:** ${specificCompany.technologies.join(', ')}
+
+**Key Achievements:**
+${specificCompany.achievements.map(achievement => `• ${achievement}`).join('\n')}
+
+${specificCompany.url ? `🌐 **Visit Website:** [${specificCompany.company}](${specificCompany.url})` : ''}`;
+      }
+    } else {
+      // Regular "Tell me more about" for projects
+      entityName = lowerQuestion.replace('tell me more about', '').trim();
+      
+      const specificProject = resumeData.projects.find(project => 
+        project.name.toLowerCase().includes(entityName.toLowerCase())
+      );
+
+      if (specificProject) {
+        return `[icon:${specificProject.icon || ''}] **${specificProject.name}**
+${specificProject.company ? `${specificProject.company}` : 'Independent Project'}
 
 ${specificProject.description}
 
@@ -56,7 +82,24 @@ ${specificProject.highlights.map(highlight => `• ${highlight}`).join('\n')}
 
 ${specificProject.url ? `🌐 **Visit Website:** [${specificProject.name}](${specificProject.url})` : ''}
 ${specificProject.github ? `🐙 **GitHub:** [View Code](${specificProject.github})` : ''}`;
+      }
     }
+  }
+
+  // Companies/Experience - Check this BEFORE projects since both use 'worked'
+  if (lowerQuestion.includes('company') || lowerQuestion.includes('companies') || lowerQuestion.includes('experience')) {
+    return `I've had the privilege of working with some great companies throughout my career:
+
+${resumeData.experience.map(exp => `
+[icon:${exp.icon || ''}] **${exp.company}**
+${exp.position} (${exp.duration})
+
+${exp.description}
+
+${exp.url ? `🌐 [Visit Website](${exp.url})` : ''} [📋 Highlights](company:${exp.company})
+`).join('\n')}
+
+Click on "Highlights" to learn more about the key achievements and technical details for each company!`;
   }
 
   // Projects
@@ -66,30 +109,14 @@ ${specificProject.github ? `🐙 **GitHub:** [View Code](${specificProject.githu
 
 ${resumeData.projects.map(project => `
 [icon:${project.icon || ''}] **${project.name}**
+${project.company ? `${project.company}` : 'Independent Project'}
+
 ${project.description}
+
 ${project.url ? `🌐 [Visit Website](${project.url})` : ''} [📋 Highlights](project:${project.name})
 `).join('\n')}
 
 Click on "Highlights" to learn more about the key contributions and technical details for each project!`;
-  }
-
-  // Companies/Experience
-  if (lowerQuestion.includes('company') || lowerQuestion.includes('companies') || lowerQuestion.includes('experience') || lowerQuestion.includes('worked')) {
-    return `I've had the privilege of working with some great companies throughout my career:
-
-${resumeData.experience.map(exp => `
-**${exp.company}** - ${exp.position}
-*${exp.duration}*
-
-${exp.description}
-
-*Key Achievements:*
-${exp.achievements.map(achievement => `• ${achievement}`).join('\n')}
-
-*Technologies Used:* ${exp.technologies.join(', ')}
-`).join('\n')}
-
-These experiences have shaped me into a well-rounded engineer who can work effectively in different environments and contribute to various types of projects.`;
   }
 
   // Hobbies

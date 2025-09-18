@@ -7,9 +7,10 @@ import Image from 'next/image';
 interface MessageBubbleProps {
   message: Message;
   onProjectClick?: (projectName: string) => void;
+  onCompanyClick?: (companyName: string) => void;
 }
 
-export default function MessageBubble({ message, onProjectClick }: MessageBubbleProps) {
+export default function MessageBubble({ message, onProjectClick, onCompanyClick }: MessageBubbleProps) {
   const parseLinks = (text: string) => {
     // First handle bold labels like **Company:** or **Technologies Used:**
     const boldLabelRegex = /\*\*([^*:]+):\*\*\s*/g;
@@ -118,6 +119,28 @@ export default function MessageBubble({ message, onProjectClick }: MessageBubble
             </svg>
           </button>
         );
+      } else if (linkUrl.startsWith('company:')) {
+        const companyName = linkUrl.replace('company:', '');
+        parts.push(
+          <button
+            key={match.index}
+            onClick={() => onCompanyClick?.(companyName)}
+            className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 
+                     underline hover:no-underline 
+                     transition-colors duration-200
+                     font-medium
+                     inline-flex items-center gap-1
+                     hover:bg-blue-50 dark:hover:bg-blue-900/20 
+                     px-1 py-0.5 rounded
+                     -mx-1
+                     cursor-pointer"
+          >
+            {linkText}
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </button>
+        );
       } else {
         // Regular external link
         parts.push(
@@ -155,86 +178,138 @@ export default function MessageBubble({ message, onProjectClick }: MessageBubble
   };
 
   const formatContent = (content: string) => {
-    // Convert markdown-style formatting to HTML
-    return content
-      .split('\n')
-      .map((line, index) => {
-        // Handle icon display with project name
-        if (line.includes('[icon:')) {
-          const iconMatch = line.match(/\[icon:([^\]]*)\]/);
-          const iconUrl = iconMatch ? iconMatch[1] : '';
-          
-          // Remove the icon markup from the line
-          const cleanLine = line.replace(/\[icon:[^\]]*\]\s*/, '');
-          
-          return (
-            <div key={index} className="flex items-start gap-3 mb-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
-              {iconUrl && (
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden">
-                  <Image
-                    src={iconUrl}
-                    alt="Project icon"
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-              <div className="flex-1">
-                {parseLinks(cleanLine)}
+    const lines = content.split('\n');
+    const result = [];
+    let i = 0;
+    
+    while (i < lines.length) {
+      const line = lines[i];
+      
+      // Handle icon display with project/profile name
+      if (line.includes('[icon:')) {
+        const iconMatch = line.match(/\[icon:([^\]]*)\]/);
+        const iconUrl = iconMatch ? iconMatch[1] : '';
+        
+        // Remove the icon markup from the line
+        const cleanLine = line.replace(/\[icon:[^\]]*\]\s*/, '');
+        
+        // Check if this is a profile response (avatar.jpg)
+        const isProfileResponse = iconUrl.includes('avatar.jpg');
+        const iconSize = isProfileResponse ? 67 : 48; // 40% larger: 48 * 1.4 = 67.2
+        
+        // Build card content
+        let cardContent = cleanLine;
+        let linesToSkip = 0;
+        
+        if (isProfileResponse) {
+          // For profile responses, include the next line (title and location) in the same card
+          if (i + 1 < lines.length && lines[i + 1].trim() && !lines[i + 1].startsWith('[') && lines[i + 1].includes('**')) {
+            cardContent += '\n' + lines[i + 1];
+            linesToSkip = 1;
+          }
+        } else {
+          // For project cards (both list and detail), include company name 
+          // Company name is typically the next line after project name and doesn't start with special chars
+          if (i + 1 < lines.length && lines[i + 1].trim() && 
+              !lines[i + 1].startsWith('[') && 
+              !lines[i + 1].startsWith('**') && 
+              !lines[i + 1].includes('🌐') && 
+              !lines[i + 1].includes('📋') &&
+              !lines[i + 1].includes('Technologies Used') &&
+              lines[i + 1].length < 100) { // Company names are typically short
+            cardContent += '\n' + lines[i + 1];
+            linesToSkip = 1;
+          }
+          // Note: We no longer include description and links in the card for a cleaner look
+        }
+        
+        result.push(
+          <div key={`card-${i}`} className="flex items-start gap-3 mb-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+            {iconUrl && (
+              <div className={`flex-shrink-0 rounded-lg overflow-hidden ${isProfileResponse ? 'w-[67px] h-[67px]' : 'w-12 h-12'}`}>
+                <Image
+                  src={iconUrl}
+                  alt={isProfileResponse ? "Profile" : "Project icon"}
+                  width={iconSize}
+                  height={iconSize}
+                  className="w-full h-full object-cover"
+                />
               </div>
+            )}
+            <div className="flex-1">
+              {cardContent.split('\n').map((cardLine, lineIndex) => (
+                <div key={lineIndex} className={lineIndex > 0 ? "mt-1" : ""}>
+                  {parseLinks(cardLine)}
+                </div>
+              ))}
             </div>
-          );
-        }
-        
-        // Handle bold labels (like **Company:** or **Technologies Used:**)
-        if (line.includes('**') && line.includes(':**')) {
-          return (
-            <div key={index} className="mb-2">
-              {parseLinks(line)}
-            </div>
-          );
-        }
-        
-        // Handle bold text
-        if (line.startsWith('**') && line.endsWith('**')) {
-          return (
-            <div key={index} className="font-semibold text-lg mb-2">
-              {parseLinks(line.slice(2, -2))}
-            </div>
-          );
-        }
-        
-        // Handle bullet points
-        if (line.startsWith('• ') || line.startsWith('*')) {
-          return (
-            <div key={index} className="ml-4 mb-1">
-              {parseLinks(line)}
-            </div>
-          );
-        }
-        
-        // Handle emphasis
-        if (line.startsWith('*') && line.endsWith('*') && !line.startsWith('**')) {
-          return (
-            <div key={index} className="italic mb-1">
-              {parseLinks(line.slice(1, -1))}
-            </div>
-          );
-        }
-        
-        // Regular line
-        if (line.trim()) {
-          return (
-            <div key={index} className="mb-2">
-              {parseLinks(line)}
-            </div>
-          );
-        }
-        
-        // Empty line for spacing
-        return <div key={index} className="mb-2"></div>;
-      });
+          </div>
+        );
+        i += linesToSkip + 1;
+        continue;
+      }
+      
+      // Handle bold labels (like **Company:** or **Technologies Used:**)
+      if (line.includes('**') && line.includes(':**')) {
+        result.push(
+          <div key={i} className="mb-2">
+            {parseLinks(line)}
+          </div>
+        );
+        i++;
+        continue;
+      }
+      
+      // Handle bold text
+      if (line.startsWith('**') && line.endsWith('**')) {
+        result.push(
+          <div key={i} className="font-semibold text-lg mb-2">
+            {parseLinks(line.slice(2, -2))}
+          </div>
+        );
+        i++;
+        continue;
+      }
+      
+      // Handle bullet points
+      if (line.startsWith('• ') || line.startsWith('*')) {
+        result.push(
+          <div key={i} className="ml-4 mb-1">
+            {parseLinks(line)}
+          </div>
+        );
+        i++;
+        continue;
+      }
+      
+      // Handle emphasis
+      if (line.startsWith('*') && line.endsWith('*') && !line.startsWith('**')) {
+        result.push(
+          <div key={i} className="italic mb-1">
+            {parseLinks(line.slice(1, -1))}
+          </div>
+        );
+        i++;
+        continue;
+      }
+      
+      // Regular line
+      if (line.trim()) {
+        result.push(
+          <div key={i} className="mb-2">
+            {parseLinks(line)}
+          </div>
+        );
+        i++;
+        continue;
+      }
+      
+      // Empty line for spacing
+      result.push(<div key={i} className="mb-2"></div>);
+      i++;
+    }
+    
+    return result;
   };
 
   return (

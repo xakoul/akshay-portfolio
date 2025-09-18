@@ -33,6 +33,8 @@ export interface ResumeData {
     description: string;
     achievements: string[];
     technologies: string[];
+    url?: string;
+    icon?: string;
   }>;
   hobbies: string[];
   contact: {
@@ -48,7 +50,7 @@ export interface ResumeData {
 export const resumeData: ResumeData = {
   personal: {
     name: "Akshay Koul",
-    title: "Software Engineer",
+    title: "Software Development Manager",
     bio: "Engineering leader with 12+ years of experience scaling teams and systems to serve 10M+ users. Proven track record in building high-performance cultures, optimizing cloud costs, and launching innovative products at speed.",
     email: "koul.akshay17@gmail.com",
     linkedin: "https://www.linkedin.com/in/koulakshay/",
@@ -128,6 +130,7 @@ export const resumeData: ResumeData = {
     },
     {
       name: "Jiva lite WhatsApp Chatbot",
+      company: "Jiva Agservices Pvt. Ltd.",
       description: "Built an AI-powered WhatsApp chatbot in Bahasa for Indonesian farmers, streamlining harvest booking.",
       technologies: ["Dialogflow", "Vertex AI", "WhatsApp API"],
       highlights: [
@@ -140,6 +143,7 @@ export const resumeData: ResumeData = {
     },
     {
       name: "Quintype Android SDK",
+      company: "Quintype Technologies",
       description: "Developed in-house Android SDK and App Engine, reducing publisher app go-live time from 30+ days to under 2 weeks, powering 20+ media apps.",
       technologies: ["Android", "Java", "Kotlin", "CI/CD"],
       highlights: [
@@ -198,55 +202,67 @@ export const resumeData: ResumeData = {
       company: "Jiva Agservices Pvt. Ltd.",
       position: "Software Development Manager",
       duration: "Jun 2022 - Sep 2025",
-      description: "Led engineering teams and built scalable solutions serving 10M+ users.",
+      description: "Jiva is an AgTech company backed by Olam International that empowers smallholder farmers in Indonesia, India, and Singapore. Founded in 2020, it provides digital advisory, access to quality inputs, micro-financing, and transparent crop procurement through mobile platforms and local networks, helping farmers improve yields, incomes, and sustainability at scale.",
       achievements: [
+        "Led engineering teams and built scalable solutions serving 10M+ users.",
         "Scaled engineering team to 17+ developers and QA engineers",
         "Improved app stability to 99.95% crash-free sessions",
-        "Migrated 26 microservices from Azure to GCP with <30 minutes downtime",
+        "Migrated 26 microservices from Azure to GCP with less than 30 minutes downtime",
         "Cut cloud costs by 22.9% while increasing deployment speed by 25%",
         "Launched Jiva lite WhatsApp chatbot reducing booking time by 64%"
       ],
-      technologies: ["Java", "Android", "Ruby on Rails","GraphQL", "GCP", "Kotlin", "React", "React Native", "Kubernetes", "Microservices", "Dialogflow" , "AI/ML"]
+      technologies: ["Java", "Android", "Ruby on Rails","GraphQL", "GCP", "Kotlin", "React", "React Native", "Kubernetes", "Microservices", "Dialogflow" , "AI/ML"],
+      url: "https://www.jiva.ag/",
+      icon: "https://play-lh.googleusercontent.com/c_sN7hrPzemXE7m0_RP9oNXL5HVSe6Il9van4IBIY2EncTvE9ZNq4q0i1IqS37NmPEM=w240-h480-rw"
     },
     {
       company: "Gojek Tech. India Pvt. Ltd.",
       position: "Senior Software Engineer L3",
       duration: "Dec 2020 - May 2022",
-      description: "Developed and maintained web applications using modern technologies",
+      description: "Gojek is a leading Indonesian super app, part of the GoTo Group, that provides a wide range of on-demand services including ride-hailing, food and grocery delivery, logistics, digital payments, and more. Founded in 2010, it connects millions of users, driver-partners, and merchants across Southeast Asia through a single integrated platform.",
       achievements: [
+        "Developed and maintained web applications using modern technologies",
         "Built responsive web applications used by 50K+ users",
         "Integrated third-party APIs and payment systems",
         "Collaborated with cross-functional teams in Agile environment",
         "Reduced bug reports by 30% through comprehensive testing"
       ],
-      technologies: ["Clojure", "Python", "Postgres", "Kafka", "Etcd"]
+      technologies: ["Clojure", "Python", "Postgres", "Kafka", "Etcd"],
+      url: "https://www.gojek.io/",
+      icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-s8SpqNhuJNyZ4zb8szuRSdXhB9BDcuRmag&s"
     },
     {
       company: "Quintype Technologies",
       position: "Senior Software Engineer",
       duration: "Nov 2015 - Dec 2020",
-      description: "Built and scaled Android and backend teams, powering media platforms.",
+      description: "Quintype Technologies is a media-tech company offering a digital-first publishing platform (DXP) that helps publishers create, distribute, and monetise content. They support CMS, paywalls, engagement tools, editorial AI and mobile apps. Over 300 publishers handle ~1.5 billion pageviews/month using their platform.",
       achievements: [
+        "Built and scaled Android and backend teams, powering media platforms.",
         "Scaled core engineering team to 8+ developers",
         "Cut release cycle from 2 weeks → 3 days via CI/CD",
         "Powered 20+ publisher apps via in-house SDK & App Engine",
         "Achieved 99.9% uptime serving 10M+ MAUs",
         "Cut story editor load time by 65%, boosting engagement by 20%"
       ],
-      technologies: ["Android", "Kotlin", "Clojure", "React", "Node.js", "Kubernetes", "Microservices"]
+      technologies: ["Android", "Kotlin", "Clojure", "React", "Node.js", "Kubernetes", "Microservices"],
+      url: "https://www.quintype.com/",
+      icon: "https://res.cloudinary.com/apideck/image/upload/v1554827336/catalog/quintype/icon128x128.png"
     },
     {
       company: "Leftshift Technologies",
       position: "Android Developer",
       duration: "Sep 2013 - Nov 2015",
-      description: "Developed and optimized Android apps like BookMyShow, Byju’s, and Faasos.",
+      description: "LeftShift Technologies is a Pune-based mobile and web app development company specializing in iOS, Android, and Node.js. They help startups and enterprises build, improve, and scale digital products with a strong focus on design, user experience, and functionality, having delivered 200+ projects across industries since 2007." ,
       achievements: [
+        "Developed and optimized Android apps like BookMyShow, Byju’s, and Faasos.",
         "Achieved 5M+ downloads with 4.5+ rating across stores",
         "Optimized apps to handle 100K+ concurrent users",
         "Reduced app bundle size by 30%",
         "Eliminated UI lag on low-memory devices"
       ],
-      technologies: ["Java", "Android", "Kotlin"]
+      technologies: ["Java", "Android", "Kotlin"],
+      url: "https://leftshift.io/",
+      icon: "https://i.postimg.cc/c4DfvTtv/leftshift.png"
     }
   ],
   hobbies: [

@@ -77,6 +77,10 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
     handleSendMessage(`Tell me more about ${projectName}`);
   };
 
+  const handleCompanyClick = (companyName: string) => {
+    handleSendMessage(`Tell me more about your work at ${companyName}`);
+  };
+
   const showSuggestions = messages.length <= 1;
   const showBubbleSuggestions = messages.length > 1 && !isLoading;
 
@@ -178,6 +182,7 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
                 key={message.id} 
                 message={message} 
                 onProjectClick={handleProjectClick}
+                onCompanyClick={handleCompanyClick}
               />
             ))}
             
