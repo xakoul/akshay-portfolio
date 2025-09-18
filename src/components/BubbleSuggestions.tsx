@@ -16,25 +16,12 @@ export default function BubbleSuggestions({ onSuggestionClick, askedQuestions, i
     // Normalize questions for comparison (remove punctuation, convert to lowercase)
     const normalizedQuestion = question.toLowerCase().replace(/[?!.,]/g, '').trim();
     
-    // Check if this question or a similar one has been asked
+    // Check if this exact question has been asked
     return !Array.from(askedQuestions).some(asked => {
       const normalizedAsked = asked.toLowerCase().replace(/[?!.,]/g, '').trim();
       
-      // Check for exact matches or significant overlap
-      if (normalizedAsked === normalizedQuestion) return true;
-      
-      // Check for key phrases that indicate the same topic
-      const questionKeywords = normalizedQuestion.split(' ').filter(word => word.length > 3);
-      const askedKeywords = normalizedAsked.split(' ').filter(word => word.length > 3);
-      
-      // If 60% or more of keywords match, consider it asked
-      const matchingKeywords = questionKeywords.filter(keyword => 
-        askedKeywords.some(askedKeyword => 
-          askedKeyword.includes(keyword) || keyword.includes(askedKeyword)
-        )
-      );
-      
-      return matchingKeywords.length >= Math.ceil(questionKeywords.length * 0.6);
+      // Only filter out exact matches or very close variations
+      return normalizedAsked === normalizedQuestion;
     });
   }).slice(0, 4); // Show max 4 suggestions
 
