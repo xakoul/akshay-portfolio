@@ -18,6 +18,12 @@ export const metadata: Metadata = {
   keywords: ["Akshay Koul", "Software Engineer", "Portfolio", "React", "Next.js", "TypeScript"],
   authors: [{ name: "Akshay Koul" }],
   creator: "Akshay Koul",
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
 };
 
 export default function RootLayout({

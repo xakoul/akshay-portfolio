@@ -14,7 +14,40 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [askedQuestions, setAskedQuestions] = useState<Set<string>>(new Set());
+  const [viewportHeight, setViewportHeight] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Handle viewport height changes for mobile keyboard
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        const vh = window.visualViewport?.height || window.innerHeight;
+        setViewportHeight(vh);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      // Set initial viewport height
+      setViewportHeight(window.visualViewport?.height || window.innerHeight);
+      
+      // Listen for viewport changes
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', handleResize);
+      }
+      window.addEventListener('resize', handleResize);
+      window.addEventListener('orientationchange', handleResize);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        if (window.visualViewport) {
+          window.visualViewport.removeEventListener('resize', handleResize);
+        }
+        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('orientationchange', handleResize);
+      }
+    };
+  }, []);
 
   // Initial welcome message
   useEffect(() => {
@@ -85,8 +118,14 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
   const showBubbleSuggestions = messages.length > 1 && !isLoading;
 
   return (
-    <div className="flex flex-col h-screen h-dvh bg-gray-50 dark:bg-gray-900"
-         style={{ height: '100dvh' }}>
+    <div 
+      className="flex flex-col bg-gray-50 dark:bg-gray-900"
+      style={{ 
+        height: viewportHeight > 0 ? `${viewportHeight}px` : '100vh',
+        maxHeight: viewportHeight > 0 ? `${viewportHeight}px` : '100vh',
+        overflow: 'hidden'
+      }}
+    >
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 shadow-sm flex-shrink-0">
         <div className="max-w-4xl mx-auto">

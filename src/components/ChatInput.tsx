@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -10,10 +10,11 @@ interface ChatInputProps {
 export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
   const [input, setInput] = useState('');
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     // Function to detect mobile keyboard
-    const handleResize = () => {
+    const handleViewportChange = () => {
       // Check if we're on mobile and if the viewport height changed significantly
       const isMobile = window.innerWidth <= 768;
       if (isMobile) {
@@ -22,27 +23,60 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
         // If viewport is significantly smaller than screen, keyboard is likely open
         const keyboardOpen = viewportHeight < windowHeight * 0.75;
         setIsKeyboardOpen(keyboardOpen);
+        
+        // Additional check: if visual viewport is much smaller than window, keyboard is open
+        const visualViewportRatio = viewportHeight / window.innerHeight;
+        if (visualViewportRatio < 0.75) {
+          setIsKeyboardOpen(true);
+        }
       } else {
         setIsKeyboardOpen(false);
       }
     };
 
+    // Function to handle focus events
+    const handleFocus = () => {
+      // Small delay to allow viewport to adjust
+      setTimeout(() => {
+        if (window.innerWidth <= 768) {
+          setIsKeyboardOpen(true);
+        }
+      }, 300);
+    };
+
+    const handleBlur = () => {
+      // Small delay to allow viewport to adjust
+      setTimeout(() => {
+        handleViewportChange();
+      }, 300);
+    };
+
     // Listen for viewport changes (more reliable for keyboard detection)
     if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleResize);
-    } else {
-      window.addEventListener('resize', handleResize);
+      window.visualViewport.addEventListener('resize', handleViewportChange);
     }
+    window.addEventListener('resize', handleViewportChange);
+    
+    // Listen for input focus/blur events
+    const inputs = document.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+      input.addEventListener('focus', handleFocus);
+      input.addEventListener('blur', handleBlur);
+    });
 
     // Initial check
-    handleResize();
+    handleViewportChange();
 
     return () => {
       if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleResize);
-      } else {
-        window.removeEventListener('resize', handleResize);
+        window.visualViewport.removeEventListener('resize', handleViewportChange);
       }
+      window.removeEventListener('resize', handleViewportChange);
+      
+      inputs.forEach(input => {
+        input.removeEventListener('focus', handleFocus);
+        input.removeEventListener('blur', handleBlur);
+      });
     };
   }, []);
 
@@ -62,13 +96,16 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
   };
 
   return (
-    <div className={`border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 ${
-      isKeyboardOpen ? 'pb-2' : 'pb-4'
-    }`}>
+    <div 
+      className={`chat-input-container border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 ${
+        isKeyboardOpen ? 'keyboard-open pb-2' : 'pb-4'
+      }`}
+    >
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
         <div className="flex items-center space-x-3">
           <div className="flex-1 relative">
             <textarea
+              ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -84,6 +121,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
                        placeholder:text-sm sm:placeholder:text-base"
               rows={1}
               disabled={isLoading}
+              style={{ fontSize: '16px' }} // Prevent zoom on iOS
             />
             {isLoading && (
               <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
