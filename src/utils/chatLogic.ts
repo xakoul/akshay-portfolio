@@ -10,6 +10,17 @@ export function generateResponse(question: string): string {
 Feel free to ask me anything! You can use the suggested questions below or ask me something specific about my skills, projects, or experience.`;
   }
 
+  // Easter egg - Harlem Shake
+  if (lowerQuestion.includes('harlem shake') || lowerQuestion.includes('do the harlem shake')) {
+    return `[HARLEM_SHAKE_TRIGGER] 🕺💃 Let's shake things up! 🎵
+
+*Cue the music* 🎶 Con los terroristas! 🎶
+
+Get ready to shake it! This portfolio is about to get funky! 🕺✨
+
+*Everything starts shaking in 3... 2... 1...* 🌪️`;
+  }
+
   // Who are you? - same response as "Who is Akshay Koul?"
   if (lowerQuestion.includes('who are you') || lowerQuestion.includes('who is akshay') || lowerQuestion.includes('about akshay') || lowerQuestion.includes('tell me about')) {
     return `[icon:/avatar.jpg] **${resumeData.personal.name}**

@@ -16,6 +16,40 @@ export default function ChatInterface() {
   const [askedQuestions, setAskedQuestions] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Harlem Shake effect
+  const triggerHarlemShake = () => {
+    // Target the avatar image specifically for the first 3 seconds
+    const avatarImage = document.getElementById('avatar-image');
+    if (avatarImage) {
+      avatarImage.classList.add('harlem-shake-avatar');
+    }
+
+    // After 3 seconds, make everything shake
+    setTimeout(() => {
+      const allElements = document.querySelectorAll('*');
+      const elementsArray = Array.from(allElements);
+      
+      elementsArray.forEach((element) => {
+        if (element !== document.body && 
+            element !== document.documentElement && 
+            element !== avatarImage &&
+            !element.classList.contains('harlem-shake-avatar')) {
+          (element as HTMLElement).classList.add('harlem-shake-crazy');
+        }
+      });
+    }, 3000);
+
+    // Clean up after 15 seconds (3s avatar + 12s crazy)
+    setTimeout(() => {
+      const allElements = document.querySelectorAll('*');
+      const elementsArray = Array.from(allElements);
+      
+      elementsArray.forEach((element) => {
+        (element as HTMLElement).classList.remove('harlem-shake-intro', 'harlem-shake-crazy', 'harlem-shake-avatar');
+      });
+    }, 15000);
+  };
+
   // Initial welcome message
   useEffect(() => {
     const welcomeMessage: Message = {
@@ -63,6 +97,14 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
 
     setMessages(prev => [...prev, aiMessage]);
     setIsLoading(false);
+
+    // Check if this is a Harlem Shake trigger
+    if (responseContent.includes('[HARLEM_SHAKE_TRIGGER]')) {
+      // Trigger the shake effect after a short delay to let the message appear
+      setTimeout(() => {
+        triggerHarlemShake();
+      }, 1000);
+    }
   };
 
   const handlePromptClick = (prompt: string) => {
@@ -96,6 +138,7 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
               {/* Profile Image */}
               <div className="relative">
                 <Image
+                  id="avatar-image"
                   src="/avatar.jpg"
                   alt="Akshay Koul"
                   width={48}
