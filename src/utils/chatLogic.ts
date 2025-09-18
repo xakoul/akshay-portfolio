@@ -126,8 +126,29 @@ ${project.url ? `🌐 [Visit Website](${project.url})` : ''} [📋 Highlights](p
 Click on "Highlights" to learn more about the key contributions and technical details for each project!`;
   }
 
+  // What do you do? - Bio response
+  if (lowerQuestion.includes('what do you do') && !lowerQuestion.includes('free time') && !lowerQuestion.includes('in your free time')) {
+    return `[icon:/avatar.jpg] **${resumeData.personal.name}**
+**${resumeData.personal.title}** - ${resumeData.personal.location}
+
+${resumeData.personal.bio}
+
+I specialize in building scalable systems and leading engineering teams. My expertise spans across:
+
+**Key Areas:**
+• **Engineering Leadership** - Scaling teams and building high-performance cultures
+• **System Architecture** - Designing microservices and distributed systems
+• **Mobile & Web Development** - Full-stack development with modern technologies
+• **Cloud & DevOps** - AWS, GCP, Kubernetes, and CI/CD optimization
+• **Product Development** - From ideation to launch, serving millions of users
+
+I'm passionate about using technology to solve real-world problems and creating products that make a meaningful impact. Currently, I'm focused on AgTech solutions that empower farmers and improve agricultural sustainability.
+
+Want to know more about my specific skills, projects, or experience? Feel free to ask!`;
+  }
+
   // Hobbies
-  if (lowerQuestion.includes('hobby') || lowerQuestion.includes('hobbies') || lowerQuestion.includes('interests') || lowerQuestion.includes('fun') || lowerQuestion.includes('free time') || lowerQuestion.includes('what do i do') || lowerQuestion.includes('what do you do in your free time')) {
+  if (lowerQuestion.includes('hobby') || lowerQuestion.includes('hobbies') || lowerQuestion.includes('interests') || lowerQuestion.includes('fun') || lowerQuestion.includes('free time') || lowerQuestion.includes('what do you do in your free time')) {
     return `When I'm not coding, I enjoy a variety of activities that keep me balanced and inspired:
 
 ${resumeData.hobbies.map(hobby => `• ${hobby}`).join('\n')}
