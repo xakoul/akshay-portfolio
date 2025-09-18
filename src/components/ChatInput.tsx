@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -9,6 +9,42 @@ interface ChatInputProps {
 
 export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
   const [input, setInput] = useState('');
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    // Function to detect mobile keyboard
+    const handleResize = () => {
+      // Check if we're on mobile and if the viewport height changed significantly
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        const viewportHeight = window.visualViewport?.height || window.innerHeight;
+        const windowHeight = window.screen.height;
+        // If viewport is significantly smaller than screen, keyboard is likely open
+        const keyboardOpen = viewportHeight < windowHeight * 0.75;
+        setIsKeyboardOpen(keyboardOpen);
+      } else {
+        setIsKeyboardOpen(false);
+      }
+    };
+
+    // Listen for viewport changes (more reliable for keyboard detection)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+    } else {
+      window.addEventListener('resize', handleResize);
+    }
+
+    // Initial check
+    handleResize();
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize);
+      } else {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +62,9 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
   };
 
   return (
-    <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+    <div className={`border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 ${
+      isKeyboardOpen ? 'pb-2' : 'pb-4'
+    }`}>
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
         <div className="flex items-center space-x-3">
           <div className="flex-1 relative">
@@ -42,7 +80,8 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
                        px-4 py-3 pr-12 
                        focus:ring-2 focus:ring-blue-500 focus:border-transparent
                        disabled:opacity-50 disabled:cursor-not-allowed
-                       max-h-32"
+                       max-h-32
+                       placeholder:text-sm sm:placeholder:text-base"
               rows={1}
               disabled={isLoading}
             />
@@ -81,9 +120,13 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
             )}
           </button>
         </div>
-        <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
-          Press Enter to send, Shift+Enter for new line
-        </div>
+        {/* Hide hint text when keyboard is open on mobile to save space */}
+        {!isKeyboardOpen && (
+          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+            <span className="hidden sm:inline">Press Enter to send, Shift+Enter for new line</span>
+            <span className="sm:hidden">Tap send or press Enter</span>
+          </div>
+        )}
       </form>
     </div>
   );

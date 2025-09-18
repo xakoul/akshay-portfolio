@@ -85,9 +85,10 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
   const showBubbleSuggestions = messages.length > 1 && !isLoading;
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex flex-col h-screen h-dvh bg-gray-50 dark:bg-gray-900"
+         style={{ height: '100dvh' }}>
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 shadow-sm flex-shrink-0">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between">
             {/* Profile Section */}
@@ -167,7 +168,7 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto min-h-0">
         <div className="max-w-4xl mx-auto p-4">
           {/* Suggested prompts (only show initially) */}
           <SuggestedPrompts 
@@ -206,14 +207,18 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
       </div>
 
       {/* Bubble Suggestions above input */}
-      <BubbleSuggestions
-        onSuggestionClick={handleBubbleSuggestionClick}
-        askedQuestions={askedQuestions}
-        isVisible={showBubbleSuggestions}
-      />
+      <div className="flex-shrink-0">
+        <BubbleSuggestions
+          onSuggestionClick={handleBubbleSuggestionClick}
+          askedQuestions={askedQuestions}
+          isVisible={showBubbleSuggestions}
+        />
+      </div>
 
       {/* Input */}
-      <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
+      <div className="flex-shrink-0">
+        <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
+      </div>
     </div>
   );
 }
