@@ -35,21 +35,42 @@ ${resumeData.skills.tools.map(tool => `• ${tool}`).join('\n')}
 I'm always learning new technologies and staying up-to-date with industry trends. Is there a specific technology you'd like to know more about?`;
   }
 
+  // Handle "Tell me more about" requests for projects
+  if (lowerQuestion.includes('tell me more about')) {
+    const projectName = lowerQuestion.replace('tell me more about', '').trim();
+    const specificProject = resumeData.projects.find(project => 
+      project.name.toLowerCase().includes(projectName.toLowerCase())
+    );
+
+    if (specificProject) {
+      return `[icon:${specificProject.icon || ''}] **${specificProject.name}**
+
+**Company:** ${specificProject.company || 'Independent Project'}
+
+${specificProject.description}
+
+**Technologies Used:** ${specificProject.technologies.join(', ')}
+
+**Key Contributions:**
+${specificProject.highlights.map(highlight => `• ${highlight}`).join('\n')}
+
+${specificProject.url ? `🌐 **Visit Website:** [${specificProject.name}](${specificProject.url})` : ''}
+${specificProject.github ? `🐙 **GitHub:** [View Code](${specificProject.github})` : ''}`;
+    }
+  }
+
   // Projects
   if (lowerQuestion.includes('project') || lowerQuestion.includes('work') || lowerQuestion.includes('built') || lowerQuestion.includes('portfolio')) {
-    return `I've worked on several exciting projects that showcase my technical abilities:
+    // Show compact project list with icons
+    return `I've worked on several exciting projects across different domains:
 
 ${resumeData.projects.map(project => `
-**${project.name}**
+[icon:${project.icon || ''}] **${project.name}**
 ${project.description}
-
-*Technologies:* ${project.technologies.join(', ')}
-
-*Key Highlights:*
-${project.highlights.map(highlight => `• ${highlight}`).join('\n')}
+${project.url ? `🌐 [Visit Website](${project.url})` : ''} [📋 Highlights](project:${project.name})
 `).join('\n')}
 
-Each project taught me valuable lessons about software architecture, user experience, and solving real-world problems. Would you like to know more details about any specific project?`;
+Click on "Highlights" to learn more about the key contributions and technical details for each project!`;
   }
 
   // Companies/Experience

@@ -24,6 +24,7 @@ export interface ResumeData {
     highlights: string[];
     url?: string;
     github?: string;
+    icon?: string;
   }>;
   experience: Array<{
     company: string;
@@ -122,7 +123,8 @@ export const resumeData: ResumeData = {
         "Migrated 26 microservices from Azure to GCP in 2 months with <30 minutes downtime",
         "Increased deployment speed by 25% while cutting cloud costs by 22.9%"
       ],
-      url: "https://play.google.com/store/apps/details?id=com.globalagricentral&hl=en_IN"
+      url: "https://play.google.com/store/apps/details?id=com.globalagricentral&hl=en_IN",
+      icon: "https://play-lh.googleusercontent.com/ETuV7ebLduaMBCVHSWxMDxmYruKrjeSnJWcU_DZ4hCZLyqeBXf72V7-NOv4kW4dBI-U=w240-h480-rw"
     },
     {
       name: "Jiva lite WhatsApp Chatbot",
@@ -132,7 +134,9 @@ export const resumeData: ResumeData = {
         "Reduced booking time by 64%",
         "Improved customer experience",
         "Delivered multilingual AI solution at scale"
-      ]
+      ],
+      url: "https://www.jivapetani.co.id/en/jivalite",
+      icon: "https://play-lh.googleusercontent.com/c_sN7hrPzemXE7m0_RP9oNXL5HVSe6Il9van4IBIY2EncTvE9ZNq4q0i1IqS37NmPEM=w240-h480-rw"
     },
     {
       name: "Quintype Android SDK",
@@ -142,7 +146,8 @@ export const resumeData: ResumeData = {
         "Reduced app launch cycle from 30+ days to < 2 weeks",
         "Powered 20+ publisher apps",
         "Improved scalability and onboarding speed"
-      ]
+      ],
+      icon: "https://res.cloudinary.com/apideck/image/upload/v1554827336/catalog/quintype/icon128x128.png"
     },
     {
       name: "ALICE - Allocation Service",
@@ -157,7 +162,8 @@ export const resumeData: ResumeData = {
         "Boosted partner onboarding speed by 50%",
         "Optimized allocation engine, improving request matching by 30% and reducing failures by 30%"
       ],
-      url: "https://www.gojek.io/blog/how-gojek-manages-1-million-drivers-with-12-engineers-part-1"
+      url: "https://www.gojek.io/blog/how-gojek-manages-1-million-drivers-with-12-engineers-part-1",
+      icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-s8SpqNhuJNyZ4zb8szuRSdXhB9BDcuRmag&s"
     },
     {
       name: "BOLD - Content Management Platform",
@@ -170,31 +176,21 @@ export const resumeData: ResumeData = {
         "Designed and deployed microservices with 99.9% uptime serving 10M+ MAUs",
         "Optimized story editor with windowing, cutting load time by 65% and increasing engagement by 20%"
       ],
-      url: "https://blog.quintype.com/product/bold-cms-explained-3-reasons-to-go-bold"
+      url: "https://blog.quintype.com/product/bold-cms-explained-3-reasons-to-go-bold",
+      icon: "https://i.postimg.cc/63LzGttw/Bold.png"
     },
     {
-      name: "AgriCentral",
-      company: "Jiva Agservices Pvt. Ltd.",
-      description: "A free digital platform empowering over 10M farmers with market insights, personalized crop plans, weather forecasts, and pest diagnosis using satellite imagery, ML, and big data.",
-      technologies: ["Android", "Kotlin", "Jetpack Compose", "Firebase", "Java", "Spring Boot", "Ruby on Rails", "CI/CD"],
-      highlights: [
-        "Scaled app to 10M farmers, improving crash-free sessions from 96.4% → 99.95%",
-        "Reduced crashes per 10K sessions from 540 → 3.4, boosting engagement by 21%",
-        "Migrated 26 microservices from Azure to GCP in 2 months with less than30 minutes downtime",
-        "Increased deployment speed by 25% while cutting cloud costs by 22.9%"
-      ],
-      url: "https://play.google.com/store/apps/details?id=com.globalagricentral&hl=en_IN"
-    },
-    {
-      name: "Android App Platform & SDK",
+      name: "The Quint app",
       company: "Quintype Technologies",
-      description: "Developed in-house Android SDK and App Engine, reducing publisher app go-live time from 30+ days to under 2 weeks, powering 20+ media apps.",
-      technologies: ["Android", "Kotlin", "CI/CD", "Microservices"],
-      highlights: [
-        "Reduced app launch cycle from 30+ days to < 2 weeks",
-        "Powered 20+ publisher apps",
-        "Improved scalability and onboarding speed"
-      ]
+      description: "The Quint is a digital-first news & views platform in India, delivering credible, interactive storytelling across politics, policy, gender, entertainment, sports, health, climate & more.",
+      technologies: ["Android", "Kotlin", "CI/CD", "Jav"],
+      highlights: ["Offers mobile-friendly content: articles, videos, explainers, and citizen journalism.",
+        "Runs fact-checking through WebQoof to combat misinformation.",
+        "Encourages reader participation via My Report, giving users a voice in reporting.",
+        "Features investigative & long-form journalism, along with special projects that address social issues."
+      ],
+      url: "https://play.google.com/store/apps/details?id=com.thequint.mobile.android&hl=en_IN",
+      icon: "https://play-lh.googleusercontent.com/oC0sc87f3WSww7bVN1g7UiDjChK4HL3ImhGqu9UewVHI5-P9ki6vlS1T6vdls2cU4SyZ=w480-h960-rw"
     }
   ],
   experience: [

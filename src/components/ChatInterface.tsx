@@ -73,6 +73,10 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
     handleSendMessage(suggestion);
   };
 
+  const handleProjectClick = (projectName: string) => {
+    handleSendMessage(`Tell me more about ${projectName}`);
+  };
+
   const showSuggestions = messages.length <= 1;
   const showBubbleSuggestions = messages.length > 1 && !isLoading;
 
@@ -170,7 +174,11 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
           {/* Messages */}
           <div className="space-y-4">
             {messages.map((message) => (
-              <MessageBubble key={message.id} message={message} />
+              <MessageBubble 
+                key={message.id} 
+                message={message} 
+                onProjectClick={handleProjectClick}
+              />
             ))}
             
             {/* Loading indicator */}

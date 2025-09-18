@@ -6,10 +6,80 @@ import Image from 'next/image';
 
 interface MessageBubbleProps {
   message: Message;
+  onProjectClick?: (projectName: string) => void;
 }
 
-export default function MessageBubble({ message }: MessageBubbleProps) {
+export default function MessageBubble({ message, onProjectClick }: MessageBubbleProps) {
   const parseLinks = (text: string) => {
+    // First handle bold labels like **Company:** or **Technologies Used:**
+    const boldLabelRegex = /\*\*([^*:]+):\*\*\s*/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    // Handle bold labels first
+    while ((match = boldLabelRegex.exec(text)) !== null) {
+      // Add text before the bold label
+      if (match.index > lastIndex) {
+        const beforeText = text.slice(lastIndex, match.index);
+        parts.push(...parseFormattedText(beforeText));
+      }
+      
+      // Add the bold label
+      parts.push(
+        <strong key={`label-${match.index}`} className="font-semibold text-gray-800 dark:text-gray-200">
+          {match[1]}:
+        </strong>
+      );
+      parts.push(' '); // Add space after label
+      
+      lastIndex = match.index + match[0].length;
+    }
+    
+    // Add remaining text
+    if (lastIndex < text.length) {
+      const remainingText = text.slice(lastIndex);
+      parts.push(...parseFormattedText(remainingText));
+    }
+    
+    return parts.length > 0 ? parts : parseFormattedText(text);
+  };
+
+  const parseFormattedText = (text: string) => {
+    // Handle regular bold text
+    const boldRegex = /\*\*([^*]+)\*\*/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    // Handle bold text
+    while ((match = boldRegex.exec(text)) !== null) {
+      // Add text before the bold
+      if (match.index > lastIndex) {
+        const beforeText = text.slice(lastIndex, match.index);
+        parts.push(...parseLinksInText(beforeText));
+      }
+      
+      // Add the bold text
+      parts.push(
+        <strong key={`bold-${match.index}`} className="font-semibold">
+          {match[1]}
+        </strong>
+      );
+      
+      lastIndex = match.index + match[0].length;
+    }
+    
+    // Add remaining text
+    if (lastIndex < text.length) {
+      const remainingText = text.slice(lastIndex);
+      parts.push(...parseLinksInText(remainingText));
+    }
+    
+    return parts.length > 0 ? parts : parseLinksInText(text);
+  };
+
+  const parseLinksInText = (text: string) => {
     // Parse markdown-style links [text](url)
     const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
     const parts = [];
@@ -22,28 +92,56 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         parts.push(text.slice(lastIndex, match.index));
       }
       
-      // Add the link
-      parts.push(
-        <a
-          key={match.index}
-          href={match[2]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 
-                   underline hover:no-underline 
-                   transition-colors duration-200
-                   font-medium
-                   inline-flex items-center gap-1
-                   hover:bg-blue-50 dark:hover:bg-blue-900/20 
-                   px-1 py-0.5 rounded
-                   -mx-1"
-        >
-          {match[1]}
-          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
-      );
+      const linkText = match[1];
+      const linkUrl = match[2];
+      
+      // Check if it's a project link
+      if (linkUrl.startsWith('project:')) {
+        const projectName = linkUrl.replace('project:', '');
+        parts.push(
+          <button
+            key={match.index}
+            onClick={() => onProjectClick?.(projectName)}
+            className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 
+                     underline hover:no-underline 
+                     transition-colors duration-200
+                     font-medium
+                     inline-flex items-center gap-1
+                     hover:bg-blue-50 dark:hover:bg-blue-900/20 
+                     px-1 py-0.5 rounded
+                     -mx-1
+                     cursor-pointer"
+          >
+            {linkText}
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </button>
+        );
+      } else {
+        // Regular external link
+        parts.push(
+          <a
+            key={match.index}
+            href={linkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 
+                     underline hover:no-underline 
+                     transition-colors duration-200
+                     font-medium
+                     inline-flex items-center gap-1
+                     hover:bg-blue-50 dark:hover:bg-blue-900/20 
+                     px-1 py-0.5 rounded
+                     -mx-1"
+          >
+            {linkText}
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        );
+      }
       
       lastIndex = match.index + match[0].length;
     }
@@ -53,7 +151,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
       parts.push(text.slice(lastIndex));
     }
     
-    return parts.length > 0 ? parts : text;
+    return parts.length > 0 ? parts : [text];
   };
 
   const formatContent = (content: string) => {
@@ -61,11 +159,48 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
     return content
       .split('\n')
       .map((line, index) => {
+        // Handle icon display with project name
+        if (line.includes('[icon:')) {
+          const iconMatch = line.match(/\[icon:([^\]]*)\]/);
+          const iconUrl = iconMatch ? iconMatch[1] : '';
+          
+          // Remove the icon markup from the line
+          const cleanLine = line.replace(/\[icon:[^\]]*\]\s*/, '');
+          
+          return (
+            <div key={index} className="flex items-start gap-3 mb-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+              {iconUrl && (
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden">
+                  <Image
+                    src={iconUrl}
+                    alt="Project icon"
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="flex-1">
+                {parseLinks(cleanLine)}
+              </div>
+            </div>
+          );
+        }
+        
+        // Handle bold labels (like **Company:** or **Technologies Used:**)
+        if (line.includes('**') && line.includes(':**')) {
+          return (
+            <div key={index} className="mb-2">
+              {parseLinks(line)}
+            </div>
+          );
+        }
+        
         // Handle bold text
         if (line.startsWith('**') && line.endsWith('**')) {
           return (
             <div key={index} className="font-semibold text-lg mb-2">
-              {line.slice(2, -2)}
+              {parseLinks(line.slice(2, -2))}
             </div>
           );
         }
