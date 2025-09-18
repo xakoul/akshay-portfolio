@@ -249,6 +249,39 @@ export default function MessageBubble({ message, onProjectClick, onCompanyClick 
         continue;
       }
       
+      // Handle skill badges (multiple images in one line)
+      if (line.includes('![') && line.split('![').length > 2) {
+        const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+        const badges = [];
+        let match;
+        
+        while ((match = imageRegex.exec(line)) !== null) {
+          const altText = match[1];
+          const imageUrl = match[2];
+          badges.push({ alt: altText, url: imageUrl });
+        }
+        
+        if (badges.length > 0) {
+          result.push(
+            <div key={i} className="flex flex-wrap gap-2 mb-4">
+              {badges.map((badge, index) => (
+                <Image
+                  key={index}
+                  src={badge.url}
+                  alt={badge.alt}
+                  width={120}
+                  height={28}
+                  className="h-7 object-contain"
+                  style={{ maxWidth: 'none', width: 'auto' }}
+                />
+              ))}
+            </div>
+          );
+          i++;
+          continue;
+        }
+      }
+      
       // Handle bold labels (like **Company:** or **Technologies Used:**)
       if (line.includes('**') && line.includes(':**')) {
         result.push(

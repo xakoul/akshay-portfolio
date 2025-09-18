@@ -22,16 +22,16 @@ Feel free to ask me about my skills, projects, or anything else you'd like to kn
     return `I have a diverse skill set spanning multiple areas of software development:
 
 **Programming Languages:**
-${resumeData.skills.technical.map(skill => `• ${skill}`).join('\n')}
+${resumeData.skills.technical.map(skill => `![${skill.name}](${skill.icon})`).join(' ')}
 
 **Frameworks & Libraries:**
-${resumeData.skills.frameworks.map(framework => `• ${framework}`).join('\n')}
+${resumeData.skills.frameworks.map(framework => `![${framework.name}](${framework.icon})`).join(' ')}
 
 **Databases:**
-${resumeData.skills.databases.map(db => `• ${db}`).join('\n')}
+${resumeData.skills.databases.map(db => `![${db.name}](${db.icon})`).join(' ')}
 
 **Tools & Platforms:**
-${resumeData.skills.tools.map(tool => `• ${tool}`).join('\n')}
+${resumeData.skills.tools.map(tool => `![${tool.name}](${tool.icon})`).join(' ')}
 
 I'm always learning new technologies and staying up-to-date with industry trends. Is there a specific technology you'd like to know more about?`;
   }

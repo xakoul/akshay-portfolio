@@ -10,10 +10,10 @@ export interface ResumeData {
     location: string;
   };
   skills: {
-    technical: string[];
-    frameworks: string[];
-    databases: string[];
-    tools: string[];
+    technical: Array<{name: string; icon: string}>;
+    frameworks: Array<{name: string; icon: string}>;
+    databases: Array<{name: string; icon: string}>;
+    tools: Array<{name: string; icon: string}>;
     languages: string[];
   };
   projects: Array<{
@@ -60,52 +60,52 @@ export const resumeData: ResumeData = {
   },
   skills: {
     technical: [
-      "JavaScript",
-      "Python",
-      "Java",
-      "Clojure",
-      "Android",
-      "Ruby on Rails",
-      "TypeScript",
-      "Kotlin",
-      "HTML/CSS",
-      "SQL",
-      "NoSQL"
+      { name: "JavaScript", icon: "https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" },
+      { name: "Python", icon: "https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" },
+      { name: "Java", icon: "https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white" },
+      { name: "Clojure", icon: "https://img.shields.io/badge/Clojure-%23Clojure.svg?style=for-the-badge&logo=Clojure&logoColor=Clojure" },
+      { name: "Android", icon: "https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" },
+      { name: "Ruby on Rails", icon: "https://img.shields.io/badge/rails-%23CC0000.svg?style=for-the-badge&logo=ruby-on-rails&logoColor=white" },
+      { name: "TypeScript", icon: "https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" },
+      { name: "Kotlin", icon: "https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white" },
+      { name: "HTML/CSS", icon: "https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" },
+      { name: "SQL", icon: "https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white" },
+      { name: "NoSQL", icon: "https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white" }
     ],
     frameworks: [
-      "React",
-      "React Native",
-      "Next.js",
-      "Node.js",
-      "Express.js",
-      "FastAPI",
-      "Spring Boot",
-      "GraphQL",
-      "Kafka",
-      "RabbitMQ",
+      { name: "React", icon: "https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" },
+      { name: "React Native", icon: "https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" },
+      { name: "Next.js", icon: "https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white" },
+      { name: "Node.js", icon: "https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" },
+      { name: "Express.js", icon: "https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB" },
+      { name: "FastAPI", icon: "https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" },
+      { name: "Spring Boot", icon: "https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white" },
+      { name: "GraphQL", icon: "https://img.shields.io/badge/-GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white" },
+      { name: "Kafka", icon: "https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka" },
+      { name: "RabbitMQ", icon: "https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white" }
     ],
     databases: [
-      "PostgreSQL",
-      "MongoDB",
-      "Redis",
-      "MySQL",
-      "Elasticsearch",
-      "Etcd"
+      { name: "PostgreSQL", icon: "https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" },
+      { name: "MongoDB", icon: "https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white" },
+      { name: "Redis", icon: "https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white" },
+      { name: "MySQL", icon: "https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white" },
+      { name: "Elasticsearch", icon: "https://img.shields.io/badge/-ElasticSearch-005571?style=for-the-badge&logo=elasticsearch" },
+      { name: "Etcd", icon: "https://img.shields.io/badge/etcd-419EDA?style=for-the-badge&logo=etcd&logoColor=white" }
     ],
     tools: [
-      "AWS",
-      "GCP",
-      "Firebase",
-      "Cloudflare",
-      "Docker",
-      "Chef",
-      "Terraform",
-      "Fastlane",
-      "GitHub",
-      "Jira",
-      "CircleCI",
-      "Datadog",
-      "Grafana"
+      { name: "AWS", icon: "https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white" },
+      { name: "GCP", icon: "https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white" },
+      { name: "Firebase", icon: "https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase" },
+      { name: "Cloudflare", icon: "https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white" },
+      { name: "Docker", icon: "https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" },
+      { name: "Chef", icon: "https://img.shields.io/badge/chef-F09820?style=for-the-badge&logo=chef&logoColor=white" },
+      { name: "Terraform", icon: "https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white" },
+      { name: "Fastlane", icon: "https://img.shields.io/badge/fastlane-00F200?style=for-the-badge&logo=fastlane&logoColor=white" },
+      { name: "GitHub", icon: "https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" },
+      { name: "Jira", icon: "https://img.shields.io/badge/jira-%230A0FFF.svg?style=for-the-badge&logo=jira&logoColor=white" },
+      { name: "CircleCI", icon: "https://img.shields.io/badge/circleci-%23161616.svg?style=for-the-badge&logo=circleci&logoColor=white" },
+      { name: "Datadog", icon: "https://img.shields.io/badge/datadog-%23632CA6.svg?style=for-the-badge&logo=datadog&logoColor=white" },
+      { name: "Grafana", icon: "https://img.shields.io/badge/grafana-%23F46800.svg?style=for-the-badge&logo=grafana&logoColor=white" }
     ],
     languages: [
       "English (Fluent)",
