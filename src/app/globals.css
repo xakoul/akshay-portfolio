@@ -38,12 +38,31 @@ body {
   body {
     /* Prevent body overflow when keyboard opens */
     overflow: hidden;
+    /* Enable native pull-to-refresh on mobile */
+    overscroll-behavior-y: auto;
   }
   
   /* Ensure proper viewport behavior on mobile */
   #__next {
     height: 100dvh;
     overflow: hidden;
+  }
+  
+  /* Allow pull-to-refresh at the root level but contain it within chat */
+  html {
+    overscroll-behavior-y: auto;
+  }
+  
+  /* Prevent pull-to-refresh on scrollable chat areas */
+  .chat-scroll-container {
+    overscroll-behavior-y: contain;
+    /* Enable touch scrolling with momentum */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Main chat container should allow pull-to-refresh when at top */
+  .chat-main-container {
+    overscroll-behavior-y: auto;
   }
 }
 

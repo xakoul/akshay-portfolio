@@ -15,6 +15,34 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [askedQuestions, setAskedQuestions] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Handle pull-to-refresh on mobile
+  useEffect(() => {
+    const handleTouchStart = () => {
+      const chatContainer = chatContainerRef.current;
+      if (chatContainer && chatContainer.scrollTop === 0) {
+        // Allow native pull-to-refresh when at the top of the chat
+        document.body.style.overscrollBehavior = 'auto';
+      } else {
+        // Prevent pull-to-refresh when scrolled down
+        document.body.style.overscrollBehavior = 'contain';
+      }
+    };
+
+    const handleTouchEnd = () => {
+      // Reset to default behavior
+      document.body.style.overscrollBehavior = 'auto';
+    };
+
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, []);
 
   // Harlem Shake effect
   const triggerHarlemShake = () => {
@@ -135,8 +163,11 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
   const showBubbleSuggestions = messages.length > 1 && !isLoading;
 
   return (
-    <div className="flex flex-col h-screen h-dvh bg-gray-50 dark:bg-gray-900"
-         style={{ height: '100dvh' }}>
+    <div className="flex flex-col h-screen h-dvh bg-gray-50 dark:bg-gray-900 chat-main-container"
+         style={{ 
+           height: '100dvh',
+           overscrollBehavior: 'auto' // Enable pull-to-refresh on the main container
+         }}>
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 shadow-sm flex-shrink-0">
         <div className="max-w-4xl mx-auto">
@@ -219,7 +250,7 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto min-h-0">
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto min-h-0 chat-scroll-container">
         <div className="max-w-4xl mx-auto p-4">
           {/* Suggested prompts (only show initially) */}
           <SuggestedPrompts 
