@@ -115,6 +115,19 @@ export const resumeData: ResumeData = {
   },
   projects: [
     {
+      name: "Marvin - Jiva offtake platform",
+      company: "Jiva Agservices Pvt. Ltd.",
+      description: "The complete backend and front end suit for offtake management at Jiva. Tracking and management of harvests, farmers, micro collectors,  sales and payments.",
+      technologies: ["Ruby on Rails", "GraphQL", "postgreSQL", "React Native", "GCP", "Retool", "Typescript", "kafka", "kubernetes", "Terraform"],
+      highlights: [
+        "Built end-to-end offtake management platform handling 100K+ farmers and 50K+ transactions monthly",
+        "Integrated with payment gateways and financial systems to streamline payments",
+        "Developed real-time dashboards for monitoring procurement and logistics",
+        "Optimized backend services to handle peak loads during harvest seasons"
+        ],
+      icon: "https://play-lh.googleusercontent.com/c_sN7hrPzemXE7m0_RP9oNXL5HVSe6Il9van4IBIY2EncTvE9ZNq4q0i1IqS37NmPEM=w240-h480-rw"
+    },
+    {
       name: "AgriCentral",
       company: "Jiva Agservices Pvt. Ltd.",
       description: "A free digital platform empowering over 10M farmers with market insights, personalized crop plans, weather forecasts, and pest diagnosis using satellite imagery, ML, and big data.",
@@ -187,7 +200,7 @@ export const resumeData: ResumeData = {
       name: "The Quint app",
       company: "Quintype Technologies",
       description: "The Quint is a digital-first news & views platform in India, delivering credible, interactive storytelling across politics, policy, gender, entertainment, sports, health, climate & more.",
-      technologies: ["Android", "Kotlin", "CI/CD", "Jav"],
+      technologies: ["Android", "Kotlin", "CI/CD", "Java"],
       highlights: ["Offers mobile-friendly content: articles, videos, explainers, and citizen journalism.",
         "Runs fact-checking through WebQoof to combat misinformation.",
         "Encourages reader participation via My Report, giving users a voice in reporting.",
