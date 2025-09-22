@@ -117,7 +117,7 @@ export const resumeData: ResumeData = {
     {
       name: "Marvin - Jiva offtake platform",
       company: "Jiva Agservices Pvt. Ltd.",
-      description: "The complete backend and front end suit for offtake management at Jiva. Tracking and management of harvests, farmers, micro collectors,  sales and payments.",
+      description: "End-to-end backend and frontend suite for offtake management at Jiva, enabling tracking and management of harvests, farmers, micro-collectors, sales, payments, and cash advances.",
       technologies: ["Ruby on Rails", "GraphQL", "postgreSQL", "React Native", "GCP", "Retool", "Typescript", "kafka", "kubernetes", "Terraform"],
       highlights: [
         "Built end-to-end offtake management platform handling 100K+ farmers and 50K+ transactions monthly",
