@@ -8,6 +8,7 @@ import MessageBubble from './MessageBubble';
 import ChatInput from './ChatInput';
 import SuggestedPrompts from './SuggestedPrompts';
 import BubbleSuggestions from './BubbleSuggestions';
+import Footer from './Footer';
 import Image from 'next/image';
 
 export default function ChatInterface() {
@@ -301,6 +302,9 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
       <div className="flex-shrink-0">
         <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
