@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  output: 'standalone',
   trailingSlash: true,
   images: {
     unoptimized: true,
@@ -16,11 +16,7 @@ const nextConfig: NextConfig = {
   // Improve static generation for better SEO
   generateEtags: false,
   
-  // Note: headers() doesn't work with static export, but they're good for reference
-  // When deploying to a server instead of static hosting, uncomment the headers section
-  
-  /*
-  // Headers for better SEO and security (use when not doing static export)
+  // Security & SEO headers (works now that we're on a Node.js server)
   async headers() {
     return [
       {
@@ -46,7 +42,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  */
 };
 
 export default nextConfig;

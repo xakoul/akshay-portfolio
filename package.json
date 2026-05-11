@@ -12,6 +12,8 @@
     "seo:check": "echo 'SEO files created: sitemap.xml, robots.txt, manifest.json' && echo 'Remember to: 1) Set up Google Search Console 2) Add domain to sitemap 3) Update verification codes'"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.48",
+    "ai": "^6.0.141",
     "date-fns": "^4.1.0",
     "next": "15.5.3",
     "react": "19.1.0",

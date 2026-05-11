@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Message } from '@/types/chat';
+import { resumeData, suggestedQuestions } from '@/data/resume';
 import { generateResponse, generateDadJokeResponse } from '@/utils/chatLogic';
-import { resumeData } from '@/data/resume';
 import MessageBubble from './MessageBubble';
 import ChatInput from './ChatInput';
 import SuggestedPrompts from './SuggestedPrompts';
@@ -14,6 +14,7 @@ import Image from 'next/image';
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [askedQuestions, setAskedQuestions] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -97,11 +98,17 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const normalizeQuestion = (question: string) =>
+    question.toLowerCase().replace(/[?!.,]/g, '').trim();
+
+  const isSuggestedQuestion = (question: string) => {
+    const normalized = normalizeQuestion(question);
+    return suggestedQuestions.some((suggested) => normalizeQuestion(suggested) === normalized);
+  };
+
   const handleSendMessage = async (content: string) => {
-    // Add to asked questions set
     setAskedQuestions(prev => new Set([...prev, content]));
 
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       content,
@@ -112,35 +119,118 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
 
-    // Simulate typing delay for more natural feel
-    await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
+    const aiMessageId = (Date.now() + 1).toString();
 
-    // Generate AI response
-    const responseContent = generateResponse(content);
-    
-    let finalResponseContent = responseContent;
-    
-    // Handle dad joke requests
-    if (responseContent === 'DAD_JOKE_REQUEST') {
-      finalResponseContent = await generateDadJokeResponse();
+    // For exact suggested questions, use the legacy structured UI responses.
+    if (isSuggestedQuestion(content)) {
+      let responseContent = generateResponse(content);
+
+      if (responseContent === 'DAD_JOKE_REQUEST') {
+        responseContent = await generateDadJokeResponse();
+      }
+
+      const aiMessage: Message = {
+        id: aiMessageId,
+        content: responseContent,
+        isUser: false,
+        timestamp: new Date(),
+      };
+
+      setMessages(prev => [...prev, aiMessage]);
+      setIsLoading(false);
+
+      if (responseContent.includes('[HARLEM_SHAKE_TRIGGER]')) {
+        setTimeout(() => triggerHarlemShake(), 1000);
+      }
+
+      return;
     }
-    
-    const aiMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      content: finalResponseContent,
-      isUser: false,
-      timestamp: new Date(),
-    };
 
-    setMessages(prev => [...prev, aiMessage]);
-    setIsLoading(false);
+    try {
+      // Build conversation history for the API (convert isUser → role format)
+      const apiMessages = [...messages, userMessage].map(m => ({
+        role: m.isUser ? ('user' as const) : ('assistant' as const),
+        content: m.content,
+      }));
 
-    // Check if this is a Harlem Shake trigger
-    if (finalResponseContent.includes('[HARLEM_SHAKE_TRIGGER]')) {
-      // Trigger the shake effect after a short delay to let the message appear
-      setTimeout(() => {
-        triggerHarlemShake();
-      }, 1000);
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: apiMessages }),
+      });
+
+      if (!response.ok) {
+        let errorMsg = 'Failed to get response. Please try again.';
+        try {
+          const errorData = await response.json();
+          if (errorData.error) errorMsg = errorData.error;
+        } catch {
+          // ignore JSON parse error
+        }
+        throw new Error(errorMsg);
+      }
+
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+      let fullContent = '';
+
+      // Read first chunk before showing the message
+      const firstRead = await reader.read();
+      if (!firstRead.done && firstRead.value) {
+        fullContent = decoder.decode(firstRead.value, { stream: true });
+      }
+
+      // Show the AI message with the first chunk and switch to streaming state
+      const aiMessage: Message = {
+        id: aiMessageId,
+        content: fullContent,
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, aiMessage]);
+      setIsLoading(false);
+      setIsStreaming(true);
+
+      // Continue streaming the rest of the response
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        fullContent += decoder.decode(value, { stream: true });
+        setMessages(prev =>
+          prev.map(m => m.id === aiMessageId ? { ...m, content: fullContent } : m)
+        );
+      }
+
+      setIsStreaming(false);
+
+      // Check if this is a Harlem Shake trigger
+      if (fullContent.includes('[HARLEM_SHAKE_TRIGGER]')) {
+        setTimeout(() => triggerHarlemShake(), 1000);
+      }
+    } catch (error) {
+      const errorContent = error instanceof Error
+        ? error.message
+        : 'Something went wrong. Please try again.';
+
+      setMessages(prev => {
+        const hasAiMessage = prev.some(m => m.id === aiMessageId);
+        if (hasAiMessage) {
+          return prev.map(m =>
+            m.id === aiMessageId ? { ...m, content: errorContent } : m
+          );
+        }
+        return [
+          ...prev,
+          {
+            id: aiMessageId,
+            content: errorContent,
+            isUser: false,
+            timestamp: new Date(),
+          },
+        ];
+      });
+      setIsLoading(false);
+      setIsStreaming(false);
     }
   };
 
@@ -161,7 +251,7 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
   };
 
   const showSuggestions = messages.length <= 1;
-  const showBubbleSuggestions = messages.length > 1 && !isLoading;
+  const showBubbleSuggestions = messages.length > 1 && !isLoading && !isStreaming;
 
   return (
     <div className="flex flex-col h-screen h-dvh bg-gray-50 dark:bg-gray-900 chat-main-container"
@@ -300,7 +390,7 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
 
       {/* Input */}
       <div className="flex-shrink-0">
-        <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
+        <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading || isStreaming} />
       </div>
 
       {/* Footer */}
