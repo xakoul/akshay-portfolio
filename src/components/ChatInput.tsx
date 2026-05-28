@@ -73,11 +73,11 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask me anything about my background, skills, or experience..."
-              className="w-full resize-none rounded-xl border border-gray-300 dark:border-gray-600 
-                       bg-white dark:bg-gray-800 
+              className="w-full resize-none rounded-xl border border-gray-300 dark:border-gray-600
+                       bg-white dark:bg-gray-800
                        text-gray-900 dark:text-gray-100
                        placeholder-gray-500 dark:placeholder-gray-400
-                       px-4 py-3 pr-12 
+                       px-4 py-3 pr-12 text-center
                        focus:ring-2 focus:ring-blue-500 focus:border-transparent
                        disabled:opacity-50 disabled:cursor-not-allowed
                        max-h-32
@@ -120,13 +120,10 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
             )}
           </button>
         </div>
-        {/* Hide hint text when keyboard is open on mobile to save space */}
-        {!isKeyboardOpen && (
-          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
-            <span className="hidden sm:inline">Press Enter to send, Shift+Enter for new line</span>
-            <span className="sm:hidden">Tap send or press Enter</span>
-          </div>
-        )}
+        {/* Hint text — desktop only */}
+        <div className="hidden sm:block mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+          Press Enter to send, Shift+Enter for new line
+        </div>
       </form>
     </div>
   );

@@ -93,9 +93,25 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
     setMessages([welcomeMessage]);
   }, []);
 
-  // Auto-scroll to bottom
+  // Scroll user's question to the top of the chat window when sent
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage) return;
+
+    const container = chatContainerRef.current;
+    if (!container) return;
+
+    if (lastMessage.isUser) {
+      const el = container.querySelector<HTMLElement>(`[data-message-id="${lastMessage.id}"]`);
+      if (el) {
+        const elTop = el.getBoundingClientRect().top;
+        const containerTop = container.getBoundingClientRect().top;
+        container.scrollTo({ top: container.scrollTop + elTop - containerTop, behavior: 'smooth' });
+      }
+    } else {
+      // For initial welcome message or AI responses, scroll to bottom as before
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   const normalizeQuestion = (question: string) =>
@@ -352,12 +368,13 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
           {/* Messages */}
           <div className="space-y-4">
             {messages.map((message) => (
-              <MessageBubble 
-                key={message.id} 
-                message={message} 
-                onProjectClick={handleProjectClick}
-                onCompanyClick={handleCompanyClick}
-              />
+              <div key={message.id} data-message-id={message.id}>
+                <MessageBubble
+                  message={message}
+                  onProjectClick={handleProjectClick}
+                  onCompanyClick={handleCompanyClick}
+                />
+              </div>
             ))}
             
             {/* Loading indicator */}

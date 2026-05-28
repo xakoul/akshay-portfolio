@@ -50,8 +50,8 @@ export interface ResumeData {
 export const resumeData: ResumeData = {
   personal: {
     name: "Akshay Koul",
-    title: "Software Development Manager",
-    bio: "Engineering leader with 12+ years of experience scaling teams and systems to serve 10M+ users. Proven track record in building high-performance cultures, optimizing cloud costs, and launching innovative products at speed.",
+    title: "Senior Engineering Manager",
+    bio: "Senior Engineering Manager with 13+ years of experience leading high-performing teams and architecting multi-tier web services at scale. Currently at Best Buy India LLP, driving technical strategy across search and suggest platforms. Proven expertise in people management (hiring, mentoring, career development) and system design (HLD/LLD). Successfully scaled engineering teams from the ground up, delivering distributed systems serving 10M+ users while maintaining operational excellence.",
     email: "koul.akshay17@gmail.com",
     linkedin: "https://www.linkedin.com/in/koulakshay/",
     github: "https://github.com/xakoul",
@@ -105,7 +105,11 @@ export const resumeData: ResumeData = {
       { name: "Jira", icon: "https://img.shields.io/badge/jira-%230A0FFF.svg?style=for-the-badge&logo=jira&logoColor=white" },
       { name: "CircleCI", icon: "https://img.shields.io/badge/circleci-%23161616.svg?style=for-the-badge&logo=circleci&logoColor=white" },
       { name: "Datadog", icon: "https://img.shields.io/badge/datadog-%23632CA6.svg?style=for-the-badge&logo=datadog&logoColor=white" },
-      { name: "Grafana", icon: "https://img.shields.io/badge/grafana-%23F46800.svg?style=for-the-badge&logo=grafana&logoColor=white" }
+      { name: "Grafana", icon: "https://img.shields.io/badge/grafana-%23F46800.svg?style=for-the-badge&logo=grafana&logoColor=white" },
+      { name: "Dialogflow", icon: "https://img.shields.io/badge/dialogflow-FF9800?style=for-the-badge&logo=dialogflow&logoColor=white" },
+      { name: "Vertex AI", icon: "https://img.shields.io/badge/Vertex%20AI-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" },
+      { name: "Gemini", icon: "https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white" },
+      { name: "GitHub Copilot", icon: "https://img.shields.io/badge/GitHub%20Copilot-000000?style=for-the-badge&logo=githubcopilot&logoColor=white" }
     ],
     languages: [
       "English (Fluent)",
@@ -212,6 +216,23 @@ export const resumeData: ResumeData = {
   ],
   experience: [
     {
+      company: "Best Buy India LLP",
+      position: "Senior Engineering Manager",
+      duration: "Dec 2025 - Present",
+      description: "Best Buy is a leading multinational consumer electronics retailer. The India engineering center drives innovation across search, suggest, and core commerce platforms, building highly scalable systems that power the customer experience for millions of shoppers.",
+      achievements: [
+        "Lead multiple engineering teams across search and suggest platforms, aligning delivery with business priorities and customer experience outcomes.",
+        "Drive technical strategy, architecture decisions, and execution planning for scalable, reliable services handling high-traffic workloads.",
+        "Partner closely with product, analytics, and platform teams to deliver cross-functional initiatives with clear ownership and measurable impact.",
+        "Strengthened engineering excellence by improving release governance, code quality standards, and incident response practices across teams.",
+        "Mentor engineering managers and senior engineers, building leadership depth and fostering a high-accountability culture.",
+        "Led modernization and performance initiatives to improve system resiliency, reduce operational risk, and increase delivery predictability."
+      ],
+      technologies: ["Java", "Spring Boot", "AWS", "Microservices", "Kafka", "Elasticsearch", "CI/CD", "Datadog"],
+      url: "https://www.bestbuy.com/",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/f/f5/Best_Buy_Logo.svg"
+    },
+    {
       company: "Jiva Agservices Pvt. Ltd.",
       position: "Software Development Manager",
       duration: "Jun 2022 - Sep 2025",
@@ -234,11 +255,12 @@ export const resumeData: ResumeData = {
       duration: "Dec 2020 - May 2022",
       description: "Gojek is a leading Indonesian super app, part of the GoTo Group, that provides a wide range of on-demand services including ride-hailing, food and grocery delivery, logistics, digital payments, and more. Founded in 2010, it connects millions of users, driver-partners, and merchants across Southeast Asia through a single integrated platform.",
       achievements: [
-        "Developed and maintained web applications using modern technologies",
-        "Built responsive web applications used by 50K+ users",
-        "Integrated third-party APIs and payment systems",
-        "Collaborated with cross-functional teams in Agile environment",
-        "Reduced bug reports by 30% through comprehensive testing"
+        "Mentored junior engineers and conducted technical interviews; led cross-functional teams across geographies.",
+        "Designed and optimized high-throughput allocation engine using streaming pipeline architecture.",
+        "Implemented multi-tier web service patterns for on-demand logistics platforms.",
+        "Established operational excellence: SLA monitoring, KPI tracking, and incident management.",
+        "Delivered features cutting launch cycles from 14 to under 4 days — a 71% reduction.",
+        "Optimized allocation engine (streaming pipeline) to improve SLA compliance by 30%."
       ],
       technologies: ["Clojure", "Python", "Postgres", "Kafka", "Etcd"],
       url: "https://www.gojek.io/",
@@ -250,12 +272,12 @@ export const resumeData: ResumeData = {
       duration: "Nov 2015 - Dec 2020",
       description: "Quintype Technologies is a media-tech company offering a digital-first publishing platform (DXP) that helps publishers create, distribute, and monetise content. They support CMS, paywalls, engagement tools, editorial AI and mobile apps. Over 300 publishers handle ~1.5 billion pageviews/month using their platform.",
       achievements: [
-        "Built and scaled Android and backend teams, powering media platforms.",
-        "Scaled core engineering team to 8+ developers",
-        "Cut release cycle from 2 weeks → 3 days via CI/CD",
-        "Powered 20+ publisher apps via in-house SDK & App Engine",
-        "Achieved 99.9% uptime serving 10M+ MAUs",
-        "Cut story editor load time by 65%, boosting engagement by 20%"
+        "Built and scaled engineering team from 0 to 8+ developers; established mentorship programs, code reviews, and technical design discussions.",
+        "Architected multi-tenant microservices platform supporting 10M+ monthly active users with 99.9% uptime.",
+        "Designed Type 2 greenfield architecture for content management and analytics systems.",
+        "Led technical design for in-house SDK and App Engine powering 20+ media publisher applications.",
+        "Reduced publisher app launch time from 30+ days to under 2 weeks.",
+        "Optimized story editor, cutting load time by 65% (3.5s → 1.2s) and increasing engagement by 20%."
       ],
       technologies: ["Android", "Kotlin", "Clojure", "React", "Node.js", "Kubernetes", "Microservices"],
       url: "https://www.quintype.com/",
@@ -263,15 +285,14 @@ export const resumeData: ResumeData = {
     },
     {
       company: "Leftshift Technologies",
-      position: "Android Developer",
+      position: "Software Development Engineer",
       duration: "Sep 2013 - Nov 2015",
       description: "LeftShift Technologies is a Pune-based mobile and web app development company specializing in iOS, Android, and Node.js. They help startups and enterprises build, improve, and scale digital products with a strong focus on design, user experience, and functionality, having delivered 200+ projects across industries since 2007." ,
       achievements: [
-        "Developed and optimized Android apps like BookMyShow, Byju’s, and Faasos.",
-        "Achieved 5M+ downloads with 4.5+ rating across stores",
-        "Optimized apps to handle 100K+ concurrent users",
-        "Reduced app bundle size by 30%",
-        "Eliminated UI lag on low-memory devices"
+        "Developed and optimized applications for BookMyShow, Byju’s, and Faasos with 5M+ downloads.",
+        "Designed features handling 100K+ concurrent users; maintained 4.5+ average store rating.",
+        "Optimized application performance, reducing bundle size by 30%.",
+        "Collaborated with product teams to gather requirements and deliver customer value."
       ],
       technologies: ["Java", "Android", "Kotlin"],
       url: "https://leftshift.io/",
@@ -290,7 +311,7 @@ export const resumeData: ResumeData = {
     linkedin: "https://www.linkedin.com/in/koulakshay/",
     github: "https://github.com/xakoul",
     preferredMethod: "Email or LinkedIn",
-    availability: "Open to new opportunities and collaborations"
+    availability: "Open to collaborations, speaking engagements, and advisory roles"
   }
 };
 
