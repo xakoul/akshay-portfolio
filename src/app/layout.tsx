@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     description: 'Experienced Software Development Manager with 12+ years in scaling teams and systems. Expert in React, Node.js, AWS, and engineering leadership.',
     images: [
       {
-        url: '/avatar.jpg',
+        url: 'https://i.postimg.cc/MKqvmvYw/Profile.png',
         width: 1200,
         height: 630,
         alt: 'Akshay Koul - Software Development Manager',
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Akshay Koul - Software Development Manager',
     description: 'Software Development Manager with 12+ years experience. Expert in React, Node.js, AWS, and engineering leadership.',
-    images: ['/avatar.jpg'],
+    images: ['https://i.postimg.cc/MKqvmvYw/Profile.png'],
     creator: '@akshaykoul',
   },
   verification: {
@@ -128,7 +128,7 @@ export default function RootLayout({
       "addressLocality": "Bengaluru",
       "addressCountry": "India"
     },
-    "image": "https://xakoul.com/avatar.jpg"
+    "image": "https://i.postimg.cc/MKqvmvYw/Profile.png"
   };
 
   return (

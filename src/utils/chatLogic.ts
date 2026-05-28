@@ -50,7 +50,7 @@ Get ready to shake it! This portfolio is about to get funky! 🕺✨
 
   // Who are you? - same response as "Who is Akshay Koul?"
   if (lowerQuestion.includes('who are you') || lowerQuestion.includes('who is akshay') || lowerQuestion.includes('about akshay') || lowerQuestion.includes('tell me about')) {
-    return `[icon:/avatar.jpg] **${resumeData.personal.name}**
+    return `[icon:https://i.postimg.cc/MKqvmvYw/Profile.png] **${resumeData.personal.name}**
 **${resumeData.personal.title}** - ${resumeData.personal.location}
 
 ${resumeData.personal.bio}
@@ -168,7 +168,7 @@ Click on "Highlights" to learn more about the key contributions and technical de
   if ((lowerQuestion.includes('what do you do') && !lowerQuestion.includes('free time') && !lowerQuestion.includes('in your free time') && !lowerQuestion.includes('for fun')) || 
       lowerQuestion.includes('what is your role') || 
       lowerQuestion.includes('what is your job')) {
-    return `[icon:/avatar.jpg] **${resumeData.personal.name}**
+    return `[icon:https://i.postimg.cc/MKqvmvYw/Profile.png] **${resumeData.personal.name}**
 **${resumeData.personal.title}** - ${resumeData.personal.location}
 
 ${resumeData.personal.bio}

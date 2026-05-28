@@ -194,7 +194,7 @@ export default function MessageBubble({ message, onProjectClick, onCompanyClick 
         const cleanLine = line.replace(/\[icon:[^\]]*\]\s*/, '');
         
         // Check if this is a profile response (avatar.jpg)
-        const isProfileResponse = iconUrl.includes('avatar.jpg');
+        const isProfileResponse = iconUrl.includes('avatar.jpg') || iconUrl.includes('Profile.png');
         const iconSize = isProfileResponse ? 67 : 48; // 40% larger: 48 * 1.4 = 67.2
         
         // Build card content
@@ -374,7 +374,7 @@ export default function MessageBubble({ message, onProjectClick, onCompanyClick 
           'Y'
         ) : (
           <Image
-            src="/avatar.jpg"
+            src="https://i.postimg.cc/MKqvmvYw/Profile.png"
             alt="Akshay Koul"
             width={28}
             height={28}

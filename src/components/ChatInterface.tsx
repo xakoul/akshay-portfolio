@@ -285,7 +285,7 @@ Feel free to ask me anything! You can use the suggested questions below or ask m
               <div className="relative">
                 <Image
                   id="avatar-image"
-                  src="/avatar.jpg"
+                  src="https://i.postimg.cc/MKqvmvYw/Profile.png"
                   alt="Akshay Koul"
                   width={48}
                   height={48}
